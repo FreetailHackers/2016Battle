@@ -61,7 +61,7 @@
   <script>
     // onload so we have a chance to get DOM element canvas
     window.onload = function(){
-      //document.getElementById('audioElement').play()
+      document.getElementById('audioElement').play()
       window.plotter = new LeapDataPlotter({
         el: document.getElementById('leap_data_plot')
       });
@@ -90,7 +90,7 @@
             });
         }
         else if (!left && right){
-          if (right.palmPosition< 50){
+          if (right.palmPosition[1] < 100){
             document.getElementById('bwong').play();
           }
           plotter.plot('height',right.palmPosition[1],{
@@ -101,7 +101,7 @@
         // bad ordering on this check
         else {
           document.getElementById('audioElement').volume = (left.palmPosition[1]/800);
-          if (right.palmPosition< 50){
+          if (right.palmPosition[1] < 100){
             document.getElementById('bwong').play();
           }
           plotter.plot('height', left.palmPosition[1],
