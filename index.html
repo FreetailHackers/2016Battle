@@ -22,6 +22,7 @@
       Leap.loop(function(frame){
         var hand = frame.hands[0];
         var hand2 = frame.hands[1];
+        console.log(frame.hands)
         // console.log(frame.hands[1])
         if (!hand && !hand2) return;
         if (!hand2 && hand ){
@@ -33,15 +34,15 @@
               });
         }
         else if (!hand && hand2){
-           console.log("HAND TWO = " + hand2.palmPosition[1]);
+          //  console.log("HAND TWO = " + hand2.palmPosition[1]);
           plotter.plot('height',hand2.palmPosition[1],{
             precision: 3,
             units: 'mm'
           });
         }
         else {
-           console.log("hand one = " + hand.palmPosition[1]);
-           console.log("HAND TWO = " + hand2.palmPosition[1]);
+          //  console.log("hand one = " + hand.palmPosition[1]);
+          //  console.log("HAND TWO = " + hand2.palmPosition[1]);
           plotter.plot('height', hand.palmPosition[1],
             {
               precision: 3,
