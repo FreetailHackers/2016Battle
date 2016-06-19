@@ -20,6 +20,7 @@
         el: document.getElementById('leap_data_plot')
       });
       Leap.loop(function(frame){
+<<<<<<< HEAD:index.html
         var hand = frame.hands[0];
         var hand2 = frame.hands[1];
         console.log(frame.hands)
@@ -36,22 +37,53 @@
         else if (!hand && hand2){
           //  console.log("HAND TWO = " + hand2.palmPosition[1]);
           plotter.plot('height',hand2.palmPosition[1],{
-            precision: 3,
-            units: 'mm'
-          });
+=======
+        if(frame.hands[0] != undefined) {
+          if (frame.hands[0].type.toString() === "left") {
+            var left = frame.hands[0];
+            var right = frame.hands[1];
+          }
+          else if (frame.hands[0].type.toString() === "right") {
+            var left = frame.hands[1];
+            var right = frame.hands[0];
+          }
         }
         else {
-          //  console.log("hand one = " + hand.palmPosition[1]);
-          //  console.log("HAND TWO = " + hand2.palmPosition[1]);
-          plotter.plot('height', hand.palmPosition[1],
+          var left = frame.hands[0];
+          var right = frame.hands[1];
+        }
+        if (!left && !right) return;
+        if (!right && left ){
+          plotter.plot('height', left.palmPosition[1],
             {
               precision: 3,
               units: 'mm'
             });
-          plotter.plot('height',hand2.palmPosition[1],{
+        }
+        else if (!left && right){
+          plotter.plot('height',right.palmPosition[1],{
+>>>>>>> 99015b6b9e9b257a7d6c8996219fc5c957e72ac5:leap-data/index.html
             precision: 3,
             units: 'mm'
-          });  
+          });
+        }
+        // bad ordering on this check
+        else {
+<<<<<<< HEAD:index.html
+          //  console.log("hand one = " + hand.palmPosition[1]);
+          //  console.log("HAND TWO = " + hand2.palmPosition[1]);
+          plotter.plot('height', hand.palmPosition[1],
+=======
+          plotter.plot('height', left.palmPosition[1],
+>>>>>>> 99015b6b9e9b257a7d6c8996219fc5c957e72ac5:leap-data/index.html
+            {
+              precision: 3,
+              units: 'mm'
+            });
+          plotter.plot('height',right.palmPosition[1],{
+            precision: 3,
+            units: 'mm'
+          });
         }
         plotter.update()
       });
