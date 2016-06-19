@@ -22,8 +22,9 @@
   <link rel="stylesheet" href="/stylesheets/all.css">
 </head>
 <body>
+  <audio id="audioElement" src="audio/bringit.mp3"></audio>
 <canvas id="leap_data_plot"></canvas>
-  <div id="thermostat">
+  <div id="thermostat" visibility: hidden>
     <div id="screen">
         <div id="target-temperature" class="home">
             <div class="away">away</div>
@@ -54,9 +55,12 @@
   <script src="/javascript/nest.js"></script>
   <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
   <script src="LeapDataPlotter.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="javascript/visualizer.js"></script>
   <script>
     // onload so we have a chance to get DOM element canvas
     window.onload = function(){
+      document.getElementById('audioElement').play()
       window.plotter = new LeapDataPlotter({
         el: document.getElementById('leap_data_plot')
       });
@@ -77,6 +81,7 @@
         }
         if (!left && !right) return;
         if (!right && left ){
+          document.getElementById('audioElement').volume = (left.palmPosition[1]/800);
           plotter.plot('height', left.palmPosition[1],
             {
               precision: 3,
@@ -91,6 +96,7 @@
         }
         // bad ordering on this check
         else {
+          document.getElementById('audioElement').volume = (left.palmPosition[1]/800);
           plotter.plot('height', left.palmPosition[1],
             {
               precision: 3,
@@ -104,7 +110,6 @@
         plotter.update()
       });
     }
-    hljs.initHighlightingOnLoad();
   </script>
 </body>
 </html>

@@ -103,6 +103,12 @@ function updateThermostatView(thermostat) {
   $('#target-temperature .hvac-mode').text(thermostat.hvac_mode);
   $('#device-name').text(thermostat.name);
   updateTemperatureDisplay(thermostat);
+  var tempString = $('#target-temperature .temp').prop('innerHTML');
+  tempString = tempString.substring(0, tempString.length - 1);
+  var nest_temp = parseInt(tempString);
+  console.log(nest_temp);
+  console.log(typeof nest_temp);
+  document.getElementById("audioElement").playbackRate = nest_temp/70;
 }
 
 /**
@@ -260,4 +266,3 @@ dataRef.on('value', function (snapshot) {
   updateStructureView(structure);
 
 });
-
