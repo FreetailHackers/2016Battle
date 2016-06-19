@@ -7,7 +7,7 @@
 
   <!-- What you need: -->
   <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
-  <script src="LeapDataPlotter.js"></script>
+  <script src="/javascript/LeapDataPlotter.js"></script>
 
   <!-- Out stuff - syntax highlighting: -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css">
@@ -50,7 +50,7 @@
           plotter.plot('height',hand2.palmPosition[1],{
             precision: 3,
             units: 'mm'
-          });  
+          });
         }
         plotter.update()
       });
