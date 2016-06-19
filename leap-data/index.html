@@ -9,10 +9,6 @@
   <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
   <script src="LeapDataPlotter.js"></script>
 
-  <!-- Out stuff - syntax highlighting: -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js"></script>
-
   <script>
     // onload so we have a chance to get DOM element canvas
     window.onload = function(){
@@ -20,24 +16,6 @@
         el: document.getElementById('leap_data_plot')
       });
       Leap.loop(function(frame){
-<<<<<<< HEAD:index.html
-        var hand = frame.hands[0];
-        var hand2 = frame.hands[1];
-        console.log(frame.hands)
-        // console.log(frame.hands[1])
-        if (!hand && !hand2) return;
-        if (!hand2 && hand ){
-            // console.log("hand one = " + hand.palmPosition[1]);
-            plotter.plot('height', hand.palmPosition[1],
-              {
-                precision: 3,
-                units: 'mm'
-              });
-        }
-        else if (!hand && hand2){
-          //  console.log("HAND TWO = " + hand2.palmPosition[1]);
-          plotter.plot('height',hand2.palmPosition[1],{
-=======
         if(frame.hands[0] != undefined) {
           if (frame.hands[0].type.toString() === "left") {
             var left = frame.hands[0];
@@ -62,20 +40,13 @@
         }
         else if (!left && right){
           plotter.plot('height',right.palmPosition[1],{
->>>>>>> 99015b6b9e9b257a7d6c8996219fc5c957e72ac5:leap-data/index.html
             precision: 3,
             units: 'mm'
           });
         }
         // bad ordering on this check
         else {
-<<<<<<< HEAD:index.html
-          //  console.log("hand one = " + hand.palmPosition[1]);
-          //  console.log("HAND TWO = " + hand2.palmPosition[1]);
-          plotter.plot('height', hand.palmPosition[1],
-=======
           plotter.plot('height', left.palmPosition[1],
->>>>>>> 99015b6b9e9b257a7d6c8996219fc5c957e72ac5:leap-data/index.html
             {
               precision: 3,
               units: 'mm'
