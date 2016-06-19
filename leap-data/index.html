@@ -7,7 +7,7 @@
 
   <!-- What you need: -->
   <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
-  <script src="/javascript/LeapDataPlotter.js"></script>
+  <script src="LeapDataPlotter.js"></script>
 
   <!-- Out stuff - syntax highlighting: -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css">
@@ -20,34 +20,42 @@
         el: document.getElementById('leap_data_plot')
       });
       Leap.loop(function(frame){
-        var hand = frame.hands[0];
-        var hand2 = frame.hands[1];
-        // console.log(frame.hands[1])
-        if (!hand && !hand2) return;
-        if (!hand2 && hand ){
-            // console.log("hand one = " + hand.palmPosition[1]);
-            plotter.plot('height', hand.palmPosition[1],
-              {
-                precision: 3,
-                units: 'mm'
-              });
-        }
-        else if (!hand && hand2){
-           console.log("HAND TWO = " + hand2.palmPosition[1]);
-          plotter.plot('height',hand2.palmPosition[1],{
-            precision: 3,
-            units: 'mm'
-          });
+        if(frame.hands[0] != undefined) {
+          if (frame.hands[0].type.toString() === "left") {
+            var left = frame.hands[0];
+            var right = frame.hands[1];
+          }
+          else if (frame.hands[0].type.toString() === "right") {
+            var left = frame.hands[1];
+            var right = frame.hands[0];
+          }
         }
         else {
-           console.log("hand one = " + hand.palmPosition[1]);
-           console.log("HAND TWO = " + hand2.palmPosition[1]);
-          plotter.plot('height', hand.palmPosition[1],
+          var left = frame.hands[0];
+          var right = frame.hands[1];
+        }
+        if (!left && !right) return;
+        if (!right && left ){
+          plotter.plot('height', left.palmPosition[1],
             {
               precision: 3,
               units: 'mm'
             });
-          plotter.plot('height',hand2.palmPosition[1],{
+        }
+        else if (!left && right){
+          plotter.plot('height',right.palmPosition[1],{
+            precision: 3,
+            units: 'mm'
+          });
+        }
+        // bad ordering on this check
+        else {
+          plotter.plot('height', left.palmPosition[1],
+            {
+              precision: 3,
+              units: 'mm'
+            });
+          plotter.plot('height',right.palmPosition[1],{
             precision: 3,
             units: 'mm'
           });
