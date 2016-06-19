@@ -14,12 +14,12 @@
   </head>
   
   <body  onload ="move()" style = "background-color:rgb(39,48,52)">
-    <div align = "center" style = "margin-top:40%">
+    <div align = "center" style = "margin-top:20%; font-size: 40px; margin-bottom:5%">
       &nbsp;
       <span
                class="txt-rotate"
                data-period="1500"
-               data-rotate='[ "Relocating to Austin,TX...", "Getting hipster glasses...", "Listening to a made-up band...", "Putting on cowboy boots...", "Getting a Honey Butter Chicken Biscuit...", "Saddling up the horse...", "Adding y&#39;all to the dictionary...", "Wishing we could call an Uber...", "Getting BBQ..." ]'></span>
+               data-rotate='[ "Relocating to Austin,TX...", "Getting hipster glasses...", "Listening to a made-up band...", "Putting on cowboy boots...","Saddling up the horse...", "Adding y&#39;all to the dictionary...", "Wishing we could call an Uber...", "Getting BBQ..." ]'></span>
     </div>
 
     <div class="container">
@@ -38,9 +38,9 @@ function move() {
     var width = 1;
     var id = setInterval(frame, 10);
     function frame() {
-        if (width >= 100) {
+        if (width > 110) {
             clearInterval(id);
-            // window.location = "http://hacktx.com";
+             window.location = "http://hacktx.com";
         } else {
             width = width+.05; 
             elem.style.width = width + '%'; 
@@ -79,7 +79,7 @@ TxtRotate.prototype.tick = function() {
   this.el.innerHTML = '<span class="wrap">'+this.txt+'</span>';
 
   var that = this;
-  var delta = 100 - Math.random() * 100;
+  var delta = 80;
 
   if (this.isDeleting) { delta /= 2; }
 
