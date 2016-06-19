@@ -108,7 +108,7 @@ function updateThermostatView(thermostat) {
   var nest_temp = parseInt(tempString);
   console.log(nest_temp);
   console.log(typeof nest_temp);
-  document.getElementById("audioElement").playbackRate = nest_temp/70;
+  document.getElementById("audioElement").playbackRate = (nest_temp/70);
 }
 
 /**

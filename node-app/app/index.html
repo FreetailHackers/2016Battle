@@ -22,8 +22,8 @@
   <link rel="stylesheet" href="/stylesheets/all.css">
 </head>
 <body>
-  <audio id="audioElement" src="audio/bringit.mp3"></audio>
-  <audio id= "bwong" src = "audio/bwong.mp3"></audio>
+  <audio id="audioElement" src="audio/violin.mp3"></audio>
+  <audio id= "bwong" src = "audio/ssbeat.mp3"></audio>
 <canvas id="leap_data_plot"></canvas>
   <div id="thermostat" visibility: hidden>
     <div id="screen">
@@ -61,10 +61,22 @@
   <script>
     // onload so we have a chance to get DOM element canvas
     window.onload = function(){
-      document.getElementById('audioElement').play()
+      document.getElementById('audioElement').play();
+      var index = 0;
+      var ready = true;
+      var songs = ['audio/violin.mp3', 'audio/youreon.mp3', 'audio/sandstorm.mp3', 'audio/bringit.mp3'];
       window.plotter = new LeapDataPlotter({
         el: document.getElementById('leap_data_plot')
       });
+      function updateSource() {
+        var audio = document.getElementById('audioElement');
+        index = (index + 1 ) % 4;
+        console.log(index);
+        audio.pause();
+        audio.src = songs[index];
+        audio.load();
+        audio.play(); //call this to play the song right away
+    }
       Leap.loop(function(frame){
         if(frame.hands[0] != undefined) {
           if (frame.hands[0].type.toString() === "left") {
@@ -82,7 +94,7 @@
         }
         if (!left && !right) return;
         if (!right && left ){
-          document.getElementById('audioElement').volume = (left.palmPosition[1]/800);
+          document.getElementById('audioElement') .volume = (left.palmPosition[1]/800);
           plotter.plot('height', left.palmPosition[1],
             {
               precision: 3,
@@ -92,6 +104,13 @@
         else if (!left && right){
           if (right.palmPosition[1] < 100){
             document.getElementById('bwong').play();
+          }
+          if (right.palmPosition[0] > 80){
+             ready = true;
+          }
+          if (right.palmPosition[0] < 20 && ready){
+            updateSource();
+            ready = false;
           }
           plotter.plot('height',right.palmPosition[1],{
             precision: 3,
@@ -103,6 +122,13 @@
           document.getElementById('audioElement').volume = (left.palmPosition[1]/800);
           if (right.palmPosition[1] < 100){
             document.getElementById('bwong').play();
+          }
+          if (right.palmPosition[0] > 80){
+             ready = true;
+          }
+          if (right.palmPosition[0] < 20 && ready){
+            updateSource();
+            ready = false;
           }
           plotter.plot('height', left.palmPosition[1],
             {
