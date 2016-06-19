@@ -1,87 +1,88 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Recognize</title>
-    <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script>
-      var pausedFrame = null;
-      var latestFrame = null;
-      window.onkeypress = function(e) {
-        if (e.charCode == 32) {
-          if (pausedFrame == null) {
-            pausedFrame = latestFrame;
-          }
-          else {
-            pausedFrame = null;
-          }
-        }
-      };
-      var controller = new Leap.Controller({enableGestures: false});
-      controller.temp = null;
-      controller.loop(function(frame) {
-        latestFrame = frame;
-        document.getElementById('out').innerHTML = (pausedFrame ? "<p><b>PAUSED</b></p>" : "") + "<div>"+(pausedFrame || latestFrame).dump()+"</div>";
-        
-        // var handsData = latestFrame.dump();
-        // var handsExist = false,
-        // match = 'Hand count:(',
-        // match2 = 'extended'
-        // index = handsData.indexOf(match);
-        // finger_start = handsData.indexOf(match2);
-        // if(handsData.substring(index+match.length, index+1+match.length)!=='0'){
-        //   handsExist = true;
-        // }
-        // if(controller.temp === null && handsExist){
-        //   controller.temp = [];
-        //   controller.temp.push('');
-        //   for(var i = 0; i <= 5; i++){
-        //     if(handsData.substring(finger_start + 10, finger_start + 11 ) == 't') {
-        //       controller.temp.push(',1');
-        //     }
-        //     if(handsData.substring(finger_start + 10, finger_start + 11 ) == 'f') {
-        //       controller.temp.push(',0');
-        //     }
-        //     finger_start = finger_start + 12;
-        //     finger_start = handsData.indexOf(match2, finger_start);
-        //   }
-        //   controller.temp.push('\n');
-        // }
-        // else if(controller.temp && controller.temp.length>0 && handsExist){
-        //   controller.temp.push('');
-        //   for(var i = 0; i <= 5; i++){
-        //     if(handsData.substring(finger_start + 10, finger_start + 11 ) == 't') {
-        //       controller.temp.push(',1');
-        //     }
-        //     if(handsData.substring(finger_start + 10, finger_start + 11 ) == 'f') {
-        //       controller.temp.push(',0');
-        //     }
-        //     finger_start = finger_start + 12;
-        //     finger_start = handsData.indexOf(match2, finger_start);
-        //   }
-        //   controller.temp.push('\n');
-        // }
-        // else if(controller.temp && controller.temp.length>0 && !handsExist){
-        //   var str = '';
-        //   for(var i=0,n=controller.temp.length;i<n;i++){
-        //     str += controller.temp[i]
-        // }
-        // controller.temp = null;
-          //var data = 'data:application/csv;charset=utf-8,'+encodeURIComponent(str);
-          //$(this).attr({'download':'myfile.csv', 'href':data, 'target':'_blank'});
-        // $.ajax({
-        //     type: 'POST',
-        //     url: 'machine_learn',
-        //     data: str,
-        //     success: function(data){
-        //       console.log('result: '+data.toString());
-        //     }
-        //   });
-        // }
+
+<head>
+
+  <title>Leap Data Plotter</title>
+
+  <!-- What you need: -->
+  <script src="https://js.leapmotion.com/leap-0.6.4.min.js"></script>
+  <script src="LeapDataPlotter.js"></script>
+
+  <!-- Out stuff - syntax highlighting: -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js"></script>
+
+  <script>
+    // onload so we have a chance to get DOM element canvas
+    window.onload = function(){
+      window.plotter = new LeapDataPlotter({
+        el: document.getElementById('leap_data_plot')
       });
-    </script>
-  </head>
-  <body>
-    <div id="out"></div>
-    <div id="log"></div>
-  </body>
+      Leap.loop(function(frame){
+        var hand = frame.hands[0];
+        var hand2 = frame.hands[1];
+        // console.log(frame.hands[1])
+        if (!hand && !hand2) return;
+        if (!hand2 && hand ){
+            // console.log("hand one = " + hand.palmPosition[1]);
+            plotter.plot('height', hand.palmPosition[1],
+              {
+                precision: 3,
+                units: 'mm'
+              });
+        }
+        else if (!hand && hand2){
+           console.log("HAND TWO = " + hand2.palmPosition[1]);
+          plotter.plot('height',hand2.palmPosition[1],{
+            precision: 3,
+            units: 'mm'
+          });
+        }
+        else {
+           console.log("hand one = " + hand.palmPosition[1]);
+           console.log("HAND TWO = " + hand2.palmPosition[1]);
+          plotter.plot('height', hand.palmPosition[1],
+            {
+              precision: 3,
+              units: 'mm'
+            });
+          plotter.plot('height',hand2.palmPosition[1],{
+            precision: 3,
+            units: 'mm'
+          });  
+        }
+        plotter.update()
+      });
+    }
+    hljs.initHighlightingOnLoad();
+  </script>
+
+  <style>
+    body {
+      font-family: Helvetica;
+    }
+    code{
+      width: 500px;
+    }
+    td {
+      vertical-align: top;
+    }
+    td.key {
+      font-weight: bold;
+    }
+  </style>
+
+</head>
+
+<body>
+
+
+
+  <canvas id="leap_data_plot"></canvas>
+
+</body>
+
+
+
 </html>
