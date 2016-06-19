@@ -23,6 +23,7 @@
 </head>
 <body>
   <audio id="audioElement" src="audio/bringit.mp3"></audio>
+  <audio id= "bwong" src = "audio/bwong.mp3"></audio>
 <canvas id="leap_data_plot"></canvas>
   <div id="thermostat" visibility: hidden>
     <div id="screen">
@@ -89,6 +90,9 @@
             });
         }
         else if (!left && right){
+          if (right.palmPosition< 50){
+            document.getElementById('bwong').play();
+          }
           plotter.plot('height',right.palmPosition[1],{
             precision: 3,
             units: 'mm'
@@ -97,6 +101,9 @@
         // bad ordering on this check
         else {
           document.getElementById('audioElement').volume = (left.palmPosition[1]/800);
+          if (right.palmPosition< 50){
+            document.getElementById('bwong').play();
+          }
           plotter.plot('height', left.palmPosition[1],
             {
               precision: 3,
